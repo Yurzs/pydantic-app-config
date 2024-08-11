@@ -1,7 +1,9 @@
 import os
 from abc import abstractmethod
+from pathlib import Path
 from typing import Callable, ClassVar, Self, TypeVar
 
+from dotenv import load_dotenv
 from pydantic import BaseModel
 from pydantic_core._pydantic_core import PydanticUndefined
 
@@ -39,6 +41,9 @@ class EnvAppConfig(AppConfig):
         """Load configuration from environment variables."""
 
         conf = {}
+
+        if Path(".env").exists():
+            load_dotenv()
 
         for field in cls.model_fields.values():
             default_value = (
