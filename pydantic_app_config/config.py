@@ -23,15 +23,16 @@ class AppConfig(BaseModel):
 
         config = cls._load()
 
-        loop = asyncio.get_event_loop()
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
 
         for startup in cls.STARTUP:
-            f = loop.create_task(startup(config))
+            f = startup(config)
 
             if asyncio.iscoroutinefunction(startup):
-                loop.run_until_complete(f)
-
-        asyncio.set_event_loop(None)
+                loop.create_task(f)
 
         return config
 
