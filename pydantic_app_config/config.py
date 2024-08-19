@@ -1,3 +1,4 @@
+import asyncio
 import os
 from abc import abstractmethod
 from pathlib import Path
@@ -22,8 +23,15 @@ class AppConfig(BaseModel):
 
         config = cls._load()
 
+        loop = asyncio.get_event_loop()
+
         for startup in cls.STARTUP:
-            startup(config)
+            f = loop.create_task(startup(config))
+
+            if asyncio.iscoroutinefunction(startup):
+                loop.run_until_complete(f)
+
+        asyncio.set_event_loop(None)
 
         return config
 
