@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pydantic-app-config"
-version = "0.1.1"
+version = "0.1.2"
 description = "Pydantic based application configuration"
 authors = ["Yury Sokov (Yurzs) <me@yurzs.dev>"]
 readme = "README.md"

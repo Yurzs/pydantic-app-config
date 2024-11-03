@@ -5,8 +5,7 @@ from pathlib import Path
 from typing import Callable, ClassVar, Self, TypeVar
 
 from dotenv import load_dotenv
-from pydantic import BaseModel
-from pydantic_core._pydantic_core import PydanticUndefined
+from pydantic import BaseModel, ConfigDict
 
 
 T = TypeVar("T")
@@ -14,6 +13,8 @@ T = TypeVar("T")
 
 class AppConfig(BaseModel):
     """Application configuration."""
+
+    model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
     STARTUP: ClassVar[list[Callable[[Self], None]]] = []
 
@@ -51,18 +52,7 @@ class EnvAppConfig(AppConfig):
     def _load(cls) -> Self:
         """Load configuration from environment variables."""
 
-        conf = {}
-
         if Path(".env").exists():
             load_dotenv()
 
-        for field in cls.model_fields.values():
-            default_value = (
-                field.default if not field.default_factory else field.default_factory()
-            )
-            if default_value == PydanticUndefined:
-                default_value = None
-
-            conf[field.alias] = os.environ.get(field.alias, default_value)
-
-        return cls.model_validate(conf)
+        return cls.model_validate(os.environ)
