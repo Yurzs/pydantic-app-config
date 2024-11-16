@@ -17,5 +17,6 @@ class Registry(BaseModel):
 
         cls._REGISTRY[cls.__name__] = cls
 
-    def get_model(self, name: str) -> Type[Self]:
-        return self._REGISTRY[name]
+    @classmethod
+    def get_model(cls, name: str) -> Type[Self]:
+        return cls._REGISTRY[name]
