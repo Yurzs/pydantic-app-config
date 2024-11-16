@@ -15,3 +15,6 @@ class Registry(BaseModel):
 
         super().__init_subclass__(**kwargs)
         cls._REGISTRY[cls.__name__] = cls
+
+    def get_model(self, name: str) -> Type[Self]:
+        return self._REGISTRY[name]
