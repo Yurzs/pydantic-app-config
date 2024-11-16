@@ -10,10 +10,11 @@ class Registry(BaseModel):
     _REGISTRY: ClassVar[dict[str, Type[Self]]] = {}
 
     def __init_subclass__(cls,  **kwargs: Unpack[ConfigDict]):
-        if cls.__name__ in cls._REGISTRY:
+        super().__init_subclass__(**kwargs)
+
+        if cls.__name__ in cls._REGISTRY and cls.model_fields:
             raise ValueError(f"Duplicate name: {cls.__name__}")
 
-        super().__init_subclass__(**kwargs)
         cls._REGISTRY[cls.__name__] = cls
 
     def get_model(self, name: str) -> Type[Self]:

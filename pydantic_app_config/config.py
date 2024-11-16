@@ -7,6 +7,8 @@ from typing import Callable, ClassVar, Self, TypeVar
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict
 
+from pydantic_app_config.registry import Registry
+
 
 T = TypeVar("T")
 
@@ -45,7 +47,7 @@ class AppConfig(BaseModel):
         pass
 
 
-class EnvAppConfig(AppConfig):
+class EnvAppConfig(AppConfig, Registry):
     """Configuration from environment variables."""
 
     @classmethod
