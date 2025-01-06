@@ -33,6 +33,8 @@ class AppConfig(BaseModel):
             loop = asyncio.new_event_loop()
             runner = loop.run_until_complete
 
+        asyncio.set_event_loop(loop)
+
         for startup in cls.STARTUP:
             f = startup(config)
 
