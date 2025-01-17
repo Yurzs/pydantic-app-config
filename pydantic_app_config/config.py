@@ -2,7 +2,7 @@ import asyncio
 import os
 from abc import abstractmethod
 from pathlib import Path
-from typing import Callable, ClassVar, Self, TypeVar
+from typing import Awaitable, Callable, ClassVar, Self, TypeVar
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict
@@ -18,28 +18,19 @@ class AppConfig(BaseModel):
 
     model_config = ConfigDict(extra="ignore", populate_by_name=True)
 
-    STARTUP: ClassVar[list[Callable[[Self], None]]] = []
+    STARTUP: ClassVar[list[Callable[[Self], None | Awaitable[None]]]] = []
 
     @classmethod
-    def load(cls) -> Self:
+    async def load(cls) -> Self:
         """Load configuration."""
 
-        config = cls._load()
-
-        try:
-            loop = asyncio.get_running_loop()
-            runner = loop.create_task
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            runner = loop.run_until_complete
-
-        asyncio.set_event_loop(loop)
+        config = await cls._load()
 
         for startup in cls.STARTUP:
-            f = startup(config)
+            result = startup(config)
 
-            if asyncio.iscoroutinefunction(startup):
-                runner(f)
+            if asyncio.iscoroutine(result):
+                await result
 
         return config
 
