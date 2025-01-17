@@ -37,7 +37,6 @@ def validate_secret(
     return handler(path.read_text())
 
 
-
 ContainerSecretStr = Annotated[
     SecretStr,
     WrapValidator(validate_secret),
