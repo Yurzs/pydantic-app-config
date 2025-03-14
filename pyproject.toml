@@ -1,19 +1,14 @@
-[tool.poetry]
+[project]
 name = "pydantic-app-config"
 version = "1.0.1"
 description = "Pydantic based application configuration"
-authors = ["Yury Sokov (Yurzs) <me@yurzs.dev>"]
+authors = [
+    {name = "Yury Sokov (Yurzs)", email = "me@yurzs.dev"}
+]
 readme = "README.md"
-license = "MIT"
+license = {text = "MIT"}
 classifiers = ["Development Status :: 4 - Beta"]
-packages = [{include = "pydantic_app_config"}, {include = "pydantic_app_config/py.typed"}]
-
-[tool.poetry.dependencies]
-python = ">=3.9,<4"
-pydantic = ">=2,<3"
-python-dotenv = ">=1,<2"
-
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
