@@ -6,7 +6,7 @@ from typing import Self, TypeVar
 from dotenv import load_dotenv
 from pydantic import BaseModel, ConfigDict
 
-from pydantic_app_config.registry import Registry
+from pydantic_conf.registry import Registry
 
 
 T = TypeVar("T")

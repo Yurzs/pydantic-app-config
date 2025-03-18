@@ -1,15 +1,16 @@
-# pydantic-app-config
+# pydantic-conf
 
 ## Overview
 
-`pydantic-app-config` is a Python library for managing application configuration using Pydantic. It supports loading configuration from environment variables and allows for custom startup actions.
+`pydantic-conf` is a Python library for managing application configuration using Pydantic. It supports 
+loading configuration from environment variables and allows for custom startup actions.
 
 ## Installation
 
 To install the package, use:
 
 ```sh
-pip install pydantic-app-config
+pip install pydantic-conf
 ```
 
 ## Usage
@@ -19,7 +20,8 @@ pip install pydantic-app-config
 Create a configuration class by inheriting from `EnvAppConfig`:
 
 ```python
-from pydantic_app_config.config import EnvAppConfig
+from pydantic_conf.config import EnvAppConfig
+
 
 class MyConfig(EnvAppConfig):
     app_name: str
